@@ -1,5 +1,7 @@
 package mrpan.android.lovemusic.bean;
 
+import android.graphics.Bitmap;
+
 public class Song {
 
 	  private String fileName;
@@ -11,8 +13,17 @@ public class Song {
 	  private String type;
 	  private String size;
 	  private String fileUrl;
+	  private Bitmap photo;
 
-	  public String getFileName() {
+	  public Bitmap getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(Bitmap photo) {
+		this.photo = photo;
+	}
+
+	public String getFileName() {
 	    return fileName;
 	  }
 
