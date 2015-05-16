@@ -5,7 +5,26 @@ import android.graphics.Bitmap;
 
 public class Song {
 
-	  private String fileName;
+	  private long Songid;
+	  private long albumid;
+	  
+	  public long getSongid() {
+		return Songid;
+	}
+
+	public void setSongid(long songid) {
+		Songid = songid;
+	}
+
+	public long getAlbumid() {
+		return albumid;
+	}
+
+	public void setAlbumid(long albumid) {
+		this.albumid = albumid;
+	}
+
+	private String fileName;
 	  private String title;
 	  private int duration;
 	  private String singer;

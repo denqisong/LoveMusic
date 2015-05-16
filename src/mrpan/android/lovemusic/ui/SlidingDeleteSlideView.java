@@ -152,7 +152,7 @@ public class SlidingDeleteSlideView extends LinearLayout {
     private void smoothScrollTo(int destX, int destY) {
     	
     	if(destX != 0){
-    		Logger.i("======");
+    		//Logger.i("»¬¶¯======");
     	}
     	
         int scrollX = getScrollX();

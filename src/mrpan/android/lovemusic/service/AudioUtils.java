@@ -43,6 +43,7 @@ public class AudioUtils {
 			Song song = null;
 			do {
 				song = new Song();
+				song.setSongid(cursor.getLong(0));
 				// 文件名
 				song.setFileName(cursor.getString(1));
 				// 歌曲名
@@ -76,6 +77,7 @@ public class AudioUtils {
 				if (cursor.getString(9) != null) {
 					song.setFileUrl(cursor.getString(9));
 				}
+				song.setAlbumid(cursor.getLong(10));
 				// 图片
 				if (cursor.getString(0) != null && cursor.getString(10) != null) {
 					Bitmap img = getMusicBitemp(context, cursor.getLong(0),
