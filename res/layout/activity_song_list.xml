@@ -1,12 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/bg_color"
     android:orientation="vertical" >
 
-    <ListView
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        >
+
+        <TextView
+            android:id="@+id/typetx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="hello" />
+
+        <Button
+            android:id="@+id/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="返回"
+            android:visibility="invisible"
+             android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <mrpan.android.lovemusic.ui.SlidingDeleteListView
         android:id="@+id/song_listview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:drawSelectorOnTop="false" 
+        android:divider="@color/bg_color"
+        android:dividerHeight="10dip"
+        >
+        </mrpan.android.lovemusic.ui.SlidingDeleteListView>
 
 </LinearLayout>

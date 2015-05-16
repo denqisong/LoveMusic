@@ -10,7 +10,7 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> 
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:name="mrpan.android.lovemusic.crash.CrashApplication"
         android:allowBackup="true"
@@ -26,10 +26,6 @@
     			 <action android:name="android.intent.action.MEDIA_EJECT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="mrpan.android.lovemusic.ui.SongList"
-            android:label="@string/title_activity_song_list" >
         </activity>
     </application>
 

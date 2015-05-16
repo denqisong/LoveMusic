@@ -1,5 +1,6 @@
 package mrpan.android.lovemusic.bean;
 
+import mrpan.android.lovemusic.ui.SlidingDeleteSlideView;
 import android.graphics.Bitmap;
 
 public class Song {
@@ -14,6 +15,7 @@ public class Song {
 	  private String size;
 	  private String fileUrl;
 	  private Bitmap photo;
+	  public SlidingDeleteSlideView slideView;
 
 	  public Bitmap getPhoto() {
 		return photo;
