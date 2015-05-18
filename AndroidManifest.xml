@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> 
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <application
         android:name="mrpan.android.lovemusic.crash.CrashApplication"
         android:allowBackup="true"
@@ -27,6 +29,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="mrpan.android.lovemusic.lrc.noLrc">
+            
+        </activity>
+        <activity
+            android:name="mrpan.android.lovemusic.lrc.havelrc">"
+            
+        </activity>
+        <activity
+            android:name="mrpan.android.lovemusic.ui.MainPlaying"
+             android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Black.NoTitleBar">
+            
+        </activity>
+        <service android:name="mrpan.android.lovemusic.service.MediaPlayService">"
+        </service>
     </application>
 
 </manifest>

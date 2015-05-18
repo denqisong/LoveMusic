@@ -74,7 +74,18 @@ public class MediaPlayService extends Service {
 		super.onRebind(intent);
 		mediaPlayer.start();
 	}
-
+void prepare()
+{
+	try {
+		mediaPlayer.prepare();
+	} catch (IllegalStateException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 	public void onStart(Intent intent, int startId) {
 
 		super.onStart(intent, startId);
@@ -278,7 +289,7 @@ public class MediaPlayService extends Service {
 		}
 
 	}
-
+	
 	public void broadCastInfo() {
 		Intent intent = new Intent();
 		intent.setAction("info");

@@ -32,49 +32,53 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * @author MrPan
  * @home www.mrpann.com
  */
 public class SongList extends Activity implements MyListViewListener,
-AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickListener{
+		AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,
+		OnClickListener {
 
 	private SlidingDeleteListView musiclistview;
 
 	Context context;
-	
+
 	private List<Song> songItems = new ArrayList<Song>();
 	private SlidingDeleteSlideView mLastSlideViewWithStatusOn;
 	private myAdapter slideAdapter;
 	private LayoutInflater mInflater;
 	private String TAG = "SongList";
-	
+
+	View view;
+	ImageView imageView;
+
 	public static Button playButton;
-	
-	int play_state, pesition;//播放状态
-	
+
+	int play_state, pesition;// 播放状态
+
 	public static TextView song_nameView, singer_nameView;
-	
-	View mini_playview;
-	
+
+	View mini_playview,mini_view;
+
 	Bitmap bm;
 	public static ImageView mini_play_image;
-	
+
 	URL album;
 	long musicAlbum_ID;// 歌曲专辑ID
 	long musicID;// 歌曲ID
-	
+
 	private TextView typetx;
-//	private String normalType = "正常模式";
-//	private String eidtextType = "编辑模式";
-	
+	// private String normalType = "正常模式";
+	// private String eidtextType = "编辑模式";
+
 	private Button black;
-	/** 判断是否长按状态*/
+	/** 判断是否长按状态 */
 	private boolean isLongState = false;
-	/** 记录选中listviw选中项*/
+	/** 记录选中listviw选中项 */
 	private HashMap<Integer, Boolean> checkedItemMap = new HashMap<Integer, Boolean>();
 
 	private Handler mHandler = null;
@@ -83,47 +87,42 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_song_list);
-//		mHandler = new MyHandler();
-		context=this;
+		context = this;
 		musiclistview = (SlidingDeleteListView) findViewById(R.id.song_listview);
 		typetx = (TextView) this.findViewById(R.id.typetx);
-		mini_playview=this.findViewById(R.id.mini_playview);
+		mini_playview = this.findViewById(R.id.mini_playview);
 		mini_playview.setOnClickListener(this);
-		//typetx.setText(normalType);
-		playButton=(Button) this.findViewById(R.id.play_or_pause);
+		playButton = (Button) this.findViewById(R.id.play_or_pause);
 		mini_play_image = (ImageView) findViewById(R.id.mini_image);
-		//song_num = (TextView) findViewById(R.id.allmusic_text2);
 		song_nameView = (TextView) findViewById(R.id.song_name);
 		singer_nameView = (TextView) findViewById(R.id.singer_name);
-		
+		mini_view=findViewById(R.id.click_to_playing);
+		mini_view.setOnClickListener(this);
+
 		black = (Button) this.findViewById(R.id.black);
 		black.setVisibility(View.INVISIBLE);
 		black.setOnClickListener(this);
-		
+
 		isLongState = false;
-		
 
 		mHandler = new Handler();
 		mInflater = getLayoutInflater();
 		init();
-		// SimpleAdapter adapter=new ImageSimpleAdapter(this, null, 0, null,
-		// null);
-		// musiclistview.setAdapter(adapter);
-		//getMetaData("sdcard");
-		
-	//	scanSdCard();
-		// 发送广播给服务在服务中跟新该页UI
-				Intent intent = new Intent();
-				intent.setAction("UI");
-				intent.putExtra("UISTATE", "1");
-				sendBroadcast(intent);
+		// getMetaData("sdcard");
 
-				IntentFilter filter = new IntentFilter();
-				filter.addAction("isplay");
-				filter.addAction("info");
-				registerReceiver(receiver, filter);
-	}
-	
+		// scanSdCard();
+		// 发送广播给服务在服务中跟新该页UI
+		Intent intent = new Intent();
+		intent.setAction("UI");
+		intent.putExtra("UISTATE", "1");
+		sendBroadcast(intent);
+
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("isplay");
+		filter.addAction("info");
+		registerReceiver(receiver, filter);
+	};
+
 	BroadcastReceiver receiver = new BroadcastReceiver() {
 
 		@Override
@@ -133,7 +132,7 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 				if (play_state == 1) {
 					playButton
 							.setBackgroundResource(R.drawable.mini_play_button);
-					
+
 				} else {
 					playButton
 							.setBackgroundResource(R.drawable.mini_pause_button_pressed);
@@ -156,10 +155,10 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 			}
 		}
 	};
-	
-	void init(){
-		
-		songItems=AudioUtils.getAllSongs(context);
+
+	void init() {
+
+		songItems = AudioUtils.getAllSongs(context);
 		song_nameView.setMovementMethod(ScrollingMovementMethod.getInstance());
 		slideAdapter = new myAdapter(this, songItems, mInflater,
 				new onSlideListener(), new onDeleteListen());
@@ -171,8 +170,7 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 		musiclistview.setOnItemLongClickListener(this);
 		musiclistview.setMyListViewListener(this);
 	}
-	
-	
+
 	/**
 	 * @Function:加载更多，刷新完成
 	 * */
@@ -181,26 +179,26 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 		musiclistview.stopLoadMore();
 		musiclistview.setRefreshTime("");// 刚刚
 	}
-	
+
 	public void mediaScan(File file) {
-	    MediaScannerConnection.scanFile(this,
-	            new String[] { file.getAbsolutePath() }, null,
-	            new OnScanCompletedListener() {
-	                @Override
-	                public void onScanCompleted(String path, Uri uri) {
-	                    Log.v("MediaScanWork", "file " + path
-	                            + " was scanned seccessfully: " + uri);
-	                }
-	            });
+		MediaScannerConnection.scanFile(this,
+				new String[] { file.getAbsolutePath() }, null,
+				new OnScanCompletedListener() {
+					@Override
+					public void onScanCompleted(String path, Uri uri) {
+						Log.v("MediaScanWork", "file " + path
+								+ " was scanned seccessfully: " + uri);
+					}
+				});
 	}
 
 	@Override
 	public void onClick(View arg0) {
 		int id = arg0.getId();
-		Logger.i("ID:"+id);
+		Logger.i("ID:" + id);
 		switch (id) {
 		case R.id.black:
-			//blackNormalState();
+			// blackNormalState();
 			break;
 		case R.id.mini_playview:
 			if (play_state == 1) {
@@ -218,12 +216,18 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 				intent.putExtra("pesition", pesition);
 				startService(intent);
 				play_state = 1;
-				playButton.setBackgroundResource(R.drawable.mini_play_button_pressed);
+				playButton
+						.setBackgroundResource(R.drawable.mini_play_button_pressed);
 			}
 			break;
-//		case R.id.play_or_pause:
-//			
-//			break;
+		case R.id.click_to_playing:
+			Intent intent = new Intent(SongList.this,
+					MainPlaying.class);
+			startActivity(intent);
+			break;
+		// case R.id.play_or_pause:
+		//
+		// break;
 		default:
 			break;
 		}
@@ -231,24 +235,43 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//		if(isLongState){
-//			Logger.i("编辑状态下点击事件");
-//			putCheckedItemMap((int)arg3);
-//			updateListviewByDataSourceNoChange(true);
-//		}else{
-//			Logger.i("正常状态下点击事件");
-//		
-//		}
+		Intent intent = new Intent(SongList.this, MediaPlayService.class);
+		intent.putExtra("pesition", arg2 - 1);
+		if (pesition != arg2) {
+			intent.putExtra("what", "play");
+		}
+		if (pesition == arg2) {
+			intent.putExtra("what", "pause");
+		}
+		if (pesition == arg2 && play_state == 0) {
+			intent.putExtra("what", "restart");
+		}
+		startService(intent);
+
+		if (view == null) {
+			view = arg1;
+			imageView = (ImageView) view.findViewById(R.id.isplay);
+			imageView.setVisibility(View.VISIBLE);
+		} else {
+			imageView = (ImageView) view.findViewById(R.id.isplay);
+			imageView.setVisibility(View.GONE);
+
+			imageView = (ImageView) arg1.findViewById(R.id.isplay);
+			imageView.setVisibility(View.VISIBLE);
+
+			view = arg1;
+
+		}
 	}
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
 		if (!isLongState) {
-//			isLongState = true;
-//			black.setVisibility(View.VISIBLE);
-//			typetx.setText(eidtextType);
-//			musiclistview.setEnableSlidingDelete(false);
+			// isLongState = true;
+			// black.setVisibility(View.VISIBLE);
+			// typetx.setText(eidtextType);
+			// musiclistview.setEnableSlidingDelete(false);
 		}
 		return false;
 	}
@@ -281,14 +304,14 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 	private void blackNormalState() {
 		if (isLongState) {
 			isLongState = false;
-			//typetx.setText(normalType);
+			// typetx.setText(normalType);
 			black.setVisibility(View.INVISIBLE);
 			checkedItemMap.clear();
 			musiclistview.setEnableSlidingDelete(true);
 			updateListviewByDataSourceNoChange(false);
 		}
 	}
-	
+
 	/**
 	 * @Function:收集选中listview item 状态
 	 * */
@@ -303,29 +326,30 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 			checkedItemMap.put(key, true);
 		}
 	}
+
 	/**
 	 * @Function:强制刷新listview(数据源没有变化的情况)
 	 * */
-	private void updateListviewByDataSourceNoChange(boolean isLongState){
+	private void updateListviewByDataSourceNoChange(boolean isLongState) {
 		slideAdapter.setIsLongState(isLongState);
 		slideAdapter.setCheckItemMap(checkedItemMap);
 		slideAdapter.notifyDataSetChanged();
 		musiclistview.setAdapter(slideAdapter);
 		musiclistview.setSelectionFromTop();
 	}
-	
+
 	@Override
 	public void onScrollListener(int position) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onScrollListenerBottom() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
 	 * @Function:删除监听
 	 * */
@@ -337,11 +361,12 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 		}
 
 	}
-	
+
 	/**
 	 * @Function:监听选中listview item 项,保证选中只有一项是处于打开状态
 	 * */
-	private class onSlideListener implements SlidingDeleteSlideView.OnSlideListener {
+	private class onSlideListener implements
+			SlidingDeleteSlideView.OnSlideListener {
 		@Override
 		public void onSlide(View view, int status) {
 			if (mLastSlideViewWithStatusOn != null
@@ -353,5 +378,17 @@ AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener,OnClickList
 				mLastSlideViewWithStatusOn = (SlidingDeleteSlideView) view;
 			}
 		}
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
 	}
 }

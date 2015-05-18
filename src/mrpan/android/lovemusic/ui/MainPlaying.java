@@ -3,9 +3,15 @@ package mrpan.android.lovemusic.ui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import mrpan.android.lovemusic.R;
 import mrpan.android.lovemusic.bean.Song;
+import mrpan.android.lovemusic.lrc.LrcRead;
+import mrpan.android.lovemusic.lrc.LyricContent;
+import mrpan.android.lovemusic.lrc.LyricView;
+import mrpan.android.lovemusic.lrc.havelrc;
+import mrpan.android.lovemusic.lrc.noLrc;
 import mrpan.android.lovemusic.service.AudioUtils;
 import mrpan.android.lovemusic.service.MediaPlayService;
 import mrpan.android.lovemusic.service.MusicUtils;
@@ -45,12 +51,12 @@ public class MainPlaying extends Activity {
 	List<Song> list;
 	public static SeekBar seekBar, seekBar2;
 	boolean isdroadcast = false;
-//	private LrcRead mLrcRead;
-//	private LyricView mLyricView;
+	private LrcRead mLrcRead;
+	private LyricView mLyricView;
 	private int index = 0;
 	private int CurrentTime = 0;
 	private int CountTime = 0;
-//	private List<LyricContent> LyricList = new ArrayList<LyricContent>();
+	private List<LyricContent> LyricList = new ArrayList<LyricContent>();
 	LocalActivityManager manager;
 	ViewPager viewPager;
 	AudioManager audioManager;
@@ -76,12 +82,12 @@ public class MainPlaying extends Activity {
 		time1 = (TextView) findViewById(R.id.time1);
 		time2 = (TextView) findViewById(R.id.time2);
 		cView = findViewById(R.id.control_view);
-		//
-		// nolrc = (TextView) findViewById(R.id.nolrcview);
-		// mLrcRead = new LrcRead();
-		// mLyricView = (LyricView) findViewById(R.id.LrcShow);
-		// mLyricView.setText("");
-		//
+		
+//		 nolrc = (TextView) findViewById(R.id.nolrcview);
+//		 mLrcRead = new LrcRead();
+//		 mLyricView = (LyricView) findViewById(R.id.LrcShow);
+//		 mLyricView.setText("");
+		
 		manager = new LocalActivityManager(this, true);
 		manager.dispatchCreate(savedInstanceState);
 		viewPager = (ViewPager) findViewById(R.id.viewpage);
@@ -95,89 +101,89 @@ public class MainPlaying extends Activity {
 		//
 		title.setMovementMethod(ScrollingMovementMethod.getInstance());
 		list = AudioUtils.getAllSongs(this);
-//		backimageView.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(MainPlaying.this,
-//						Songlist.class);
-//				startActivity(intent);
-//			}
-//		});
+		backimageView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainPlaying.this,
+						SongList.class);
+				startActivity(intent);
+			}
+		});
 		button1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-//				if (mode == 3) {
-//					int c = pesition - 1;
-//					if (c == -1) {
-//						c = list.size() - 1;
-//					}
-//					Intent intent = new Intent(MainPlaying.this,
-//							MediaPlayService.class);
-//					intent.putExtra("pesition", c);
-//					intent.putExtra("what", "play");
-//					startService(intent);
-//
-//				}
-//				if (mode == 2) {
-//					Random random = new Random();
-//					pesition = random.nextInt(list.size() - 1);
-//					Intent intent = new Intent(MainPlaying.this,
-//							MediaPlayService.class);
-//					intent.putExtra("pesition", pesition);
-//					intent.putExtra("what", "play");
-//					startService(intent);
-//				}
-//				if (mode == 1) {
-//					int c = pesition - 1;
-//					if (c == -1) {
-//						c = list.size() - 1;
-//					}
-//					Intent intent = new Intent(MainPlaying.this,
-//							MediaPlayService.class);
-//					intent.putExtra("pesition", c);
-//					intent.putExtra("what", "play");
-//					startService(intent);
-//				}
+				if (mode == 3) {
+					int c = pesition - 1;
+					if (c == -1) {
+						c = list.size() - 1;
+					}
+					Intent intent = new Intent(MainPlaying.this,
+							MediaPlayService.class);
+					intent.putExtra("pesition", c);
+					intent.putExtra("what", "play");
+					startService(intent);
+
+				}
+				if (mode == 2) {
+					Random random = new Random();
+					pesition = random.nextInt(list.size() - 1);
+					Intent intent = new Intent(MainPlaying.this,
+							MediaPlayService.class);
+					intent.putExtra("pesition", pesition);
+					intent.putExtra("what", "play");
+					startService(intent);
+				}
+				if (mode == 1) {
+					int c = pesition - 1;
+					if (c == -1) {
+						c = list.size() - 1;
+					}
+					Intent intent = new Intent(MainPlaying.this,
+							MediaPlayService.class);
+					intent.putExtra("pesition", c);
+					intent.putExtra("what", "play");
+					startService(intent);
+				}
 			}
 		});
 		button3.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				if (mode == 3) {
-//					int c = pesition + 1;
-//					if (c == list.size()) {
-//						c = 0;
-//					}
-//					Intent intent = new Intent(MainPlaying.this,
-//							MediaPlayService.class);
-//					intent.putExtra("pesition", c);
-//					intent.putExtra("what", "play");
-//					startService(intent);
-//				}
-//				if (mode == 2) {
-//					Random random = new Random();
-//					pesition = random.nextInt(list.size() - 1);
-//					Intent intent = new Intent(MainPlaying.this,
-//							MediaPlayService.class);
-//					intent.putExtra("pesition", pesition);
-//					intent.putExtra("what", "play");
-//					startService(intent);
-//				}
-//				if (mode == 1) {
-//					int c = pesition + 1;
-//					if (c == list.size()) {
-//						c = 0;
-//					}
-//					Intent intent = new Intent(MainPlaying.this,
-//							MediaPlayService.class);
-//					intent.putExtra("pesition", c);
-//					intent.putExtra("what", "play");
-//					startService(intent);
-//				}
+				// TODO Auto-generated method stub
+				if (mode == 3) {
+					int c = pesition + 1;
+					if (c == list.size()) {
+						c = 0;
+					}
+					Intent intent = new Intent(MainPlaying.this,
+							MediaPlayService.class);
+					intent.putExtra("pesition", c);
+					intent.putExtra("what", "play");
+					startService(intent);
+				}
+				if (mode == 2) {
+					Random random = new Random();
+					pesition = random.nextInt(list.size() - 1);
+					Intent intent = new Intent(MainPlaying.this,
+							MediaPlayService.class);
+					intent.putExtra("pesition", pesition);
+					intent.putExtra("what", "play");
+					startService(intent);
+				}
+				if (mode == 1) {
+					int c = pesition + 1;
+					if (c == list.size()) {
+						c = 0;
+					}
+					Intent intent = new Intent(MainPlaying.this,
+							MediaPlayService.class);
+					intent.putExtra("pesition", c);
+					intent.putExtra("what", "play");
+					startService(intent);
+				}
 			}
 		});
 
