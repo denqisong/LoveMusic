@@ -75,6 +75,7 @@ public class MainPlaying extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.music_main_play);
+		
 		backimageView = (ImageView) findViewById(R.id.main_playing_back);
 		title = (TextView) findViewById(R.id.main_playing_title);
 		button1 = (ImageButton) findViewById(R.id.main_pre);

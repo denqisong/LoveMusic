@@ -14,11 +14,11 @@
         android:textSize="20dp"
         android:textColor="@android:color/white" />
 
-    <com.anjoyo.LRC.LyricView
+    <mrpan.android.lovemusic.lrc.LyricView
         android:id="@+id/lrcview2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|center_vertical" >
-    </com.anjoyo.LRC.LyricView>
+    </mrpan.android.lovemusic.lrc.LyricView>
 
 </FrameLayout>
