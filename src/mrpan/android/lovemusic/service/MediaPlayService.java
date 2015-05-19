@@ -135,26 +135,26 @@ void prepare()
 		}).start();
 		
 		
-		manager=(NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
-		new Thread(new Runnable() {			
-		
-			public void run() {
-				Notification notification=new Notification();
-				notification.icon=R.drawable.icon_notification;
-				RemoteViews views=new RemoteViews(getPackageName(), R.layout.notification);
-				views.setImageViewResource(R.id.notification_image, R.drawable.icon_notification);
-				views.setTextViewText(R.id.notification_title,list.get(pesition).getTitle().toString());
-				views.setTextViewText(R.id.notification_arties, list.get(pesition).getSinger().toString());
-				notification.contentView=views;
-				notification.flags=Notification.FLAG_NO_CLEAR;
-				Intent intent=new Intent(MediaPlayService.this, MainPlaying.class);
-				PendingIntent pendingIntent=PendingIntent.getActivity(MediaPlayService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
-				notification.contentIntent=pendingIntent;				
-				manager.notify(10, notification);
-				
-			}
-		}).start();
-		
+//		manager=(NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+//		new Thread(new Runnable() {			
+//		
+//			public void run() {
+//				Notification notification=new Notification();
+//				notification.icon=R.drawable.icon_notification;
+//				RemoteViews views=new RemoteViews(getPackageName(), R.layout.notification);
+//				views.setImageViewResource(R.id.notification_image, R.drawable.icon_notification);
+//				views.setTextViewText(R.id.notification_title,list.get(pesition).getTitle().toString());
+//				views.setTextViewText(R.id.notification_arties, list.get(pesition).getSinger().toString());
+//				notification.contentView=views;
+//				notification.flags=Notification.FLAG_NO_CLEAR;
+//				Intent intent=new Intent(MediaPlayService.this, MainPlaying.class);
+//				PendingIntent pendingIntent=PendingIntent.getActivity(MediaPlayService.this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+//				notification.contentIntent=pendingIntent;				
+//				manager.notify(10, notification);
+//				
+//			}
+//		}).start();
+//		
 		
 		//À´µç¼àÌý
 		//TelephonyManager managerTelephonyManager=(TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);

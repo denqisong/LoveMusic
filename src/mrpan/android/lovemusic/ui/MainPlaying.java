@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.baidu.frontia.Frontia;
+import com.baidu.frontia.api.FrontiaSocialShare;
+import com.baidu.frontia.api.FrontiaSocialShareContent;
+import com.baidu.frontia.api.FrontiaSocialShareListener;
+import com.baidu.frontia.api.FrontiaAuthorization.MediaType;
+import com.baidu.frontia.api.FrontiaSocialShare.FrontiaTheme;
 import mrpan.android.lovemusic.R;
 import mrpan.android.lovemusic.bean.Song;
 import mrpan.android.lovemusic.lrc.LrcRead;
@@ -28,6 +34,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -35,16 +42,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class MainPlaying extends Activity {
-	ImageView backimageView, main_playing_image, play_mode1;
+	ImageView backimageView, main_playing_image, play_mode1,share_more;
 	TextView title, time1, time2, nolrc;
 	View cView;
 	int play_state, pesition, duration, current;
 	int mode = 3;
 
+	private FrontiaSocialShare mSocialShare;
+	private FrontiaSocialShareContent mSocialShareContent = new FrontiaSocialShareContent();
+	
 	ImageButton button1, button3;
 	ImageButton button2;
 	Button main_playing_button2;
@@ -62,7 +73,6 @@ public class MainPlaying extends Activity {
 	AudioManager audioManager;
 
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.music_main_play);
 		backimageView = (ImageView) findViewById(R.id.main_playing_back);
@@ -73,7 +83,11 @@ public class MainPlaying extends Activity {
 		main_playing_image = (ImageView) findViewById(R.id.main_playing_image);
 		main_playing_button2 = (Button) findViewById(R.id.main_playing_button2);
 		play_mode1 = (ImageView) findViewById(R.id.play_mode1);
-
+		share_more=(ImageView)findViewById(R.id.share_more);
+		Frontia.init(this.getApplicationContext(),"ElVMbbbyOrCh8lksLA3MXiP1");
+		mSocialShare = Frontia.getSocialShare();
+		mSocialShare.setContext(this);
+		
 		seekBar = (SeekBar) findViewById(R.id.seekbar);
 
 		// 音量
@@ -82,20 +96,20 @@ public class MainPlaying extends Activity {
 		time1 = (TextView) findViewById(R.id.time1);
 		time2 = (TextView) findViewById(R.id.time2);
 		cView = findViewById(R.id.control_view);
-		
-//		 nolrc = (TextView) findViewById(R.id.nolrcview);
-//		 mLrcRead = new LrcRead();
-//		 mLyricView = (LyricView) findViewById(R.id.LrcShow);
-//		 mLyricView.setText("");
-		
+		//
+		// nolrc = (TextView) findViewById(R.id.nolrcview);
+		// mLrcRead = new LrcRead();
+		// mLyricView = (LyricView) findViewById(R.id.LrcShow);
+		// mLyricView.setText("");
+		//
 		manager = new LocalActivityManager(this, true);
 		manager.dispatchCreate(savedInstanceState);
 		viewPager = (ViewPager) findViewById(R.id.viewpage);
 		ArrayList<View> viewlist = new ArrayList<View>();
 		Intent intent1 = new Intent(this, noLrc.class);
 		viewlist.add(getView("A", intent1));
-//		Intent intent2 = new Intent(this, havelrc.class);
-//		viewlist.add(getView("B", intent2));
+		Intent intent2 = new Intent(this, havelrc.class);
+		viewlist.add(getView("B", intent2));
 		viewPager.setAdapter(new MyPagerAdapter(viewlist));
 		viewPager.setCurrentItem(0);
 		//
@@ -110,6 +124,20 @@ public class MainPlaying extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		share_more.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mSocialShare
+				.show(MainPlaying.this.getWindow().getDecorView(),
+						mSocialShareContent, FrontiaTheme.DARK,
+						new ShareListener());
+			}
+			
+		});
+		
 		button1.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -462,6 +490,28 @@ public class MainPlaying extends Activity {
 
 			}
 		});
+	}
+	private class ShareListener implements FrontiaSocialShareListener {
+
+		@Override
+		public void onSuccess() {
+			Log.d("Test", "share success");
+			Toast.makeText(getApplicationContext(), "分享成功！", Toast.LENGTH_LONG)
+					.show();
+		}
+
+		@Override
+		public void onFailure(int errCode, String errMsg) {
+			Log.d("Test", "share errCode " + errCode);
+			Toast.makeText(getApplicationContext(), "分享失败", Toast.LENGTH_LONG)
+					.show();
+		}
+
+		@Override
+		public void onCancel() {
+			Log.d("Test", "cancel ");
+		}
+
 	}
 
 }

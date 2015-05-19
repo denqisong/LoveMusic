@@ -137,6 +137,7 @@
                     android:background="@drawable/download_play_activity_hover" />
 
                 <ImageView
+                    android:id="@+id/share_more"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center_horizontal"
