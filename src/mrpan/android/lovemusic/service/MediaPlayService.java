@@ -2,31 +2,20 @@ package mrpan.android.lovemusic.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
-import mrpan.android.lovemusic.R;
 import mrpan.android.lovemusic.bean.Song;
-import mrpan.android.lovemusic.ui.MainPlaying;
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Binder;
 import android.os.IBinder;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
-import android.widget.RemoteViews;
-import android.widget.RemoteViews.RemoteView;
 import android.widget.Toast;
 
 public class MediaPlayService extends Service {
@@ -110,7 +99,7 @@ void prepare()
 
 			@Override
 			public void run() {
-				broadCastState();
+				broadCastState2();
 				broadCastInfo();
 				//mode1();
 			}
@@ -275,7 +264,7 @@ void prepare()
 
 	}
 
-	public void broadCastState() {
+	public void broadCastState2() {
 		if (mediaPlayer.isPlaying()) {
 			Intent intent = new Intent();
 			intent.setAction("isplay");
@@ -288,6 +277,20 @@ void prepare()
 			sendBroadcast(intent);
 		}
 
+	}
+	
+	public void broadCastState() {
+		if (mediaPlayer.isPlaying()) {
+			Intent intent = new Intent();
+			intent.setAction("isplay");
+			intent.putExtra("state", 1);
+			sendBroadcast(intent);
+		} else {
+			Intent intent = new Intent();
+			intent.setAction("isplay");
+			intent.putExtra("state", 0);
+			sendBroadcast(intent);
+		}
 	}
 	
 	public void broadCastInfo() {
@@ -318,7 +321,7 @@ void prepare()
 					pesition=random.nextInt(list.size()-1);
 					play(list.get(pesition).getFileUrl().toString());	
 				}				
-				broadCastState();
+				broadCastState2();
 				broadCastInfo();
 				
 			}

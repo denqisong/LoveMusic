@@ -59,7 +59,7 @@ public class havelrc extends Activity{
 				String lrcurl = dataList.get(pesition).getTitle().toString();
 				String lrcurl2 = lrcurl.substring(0, lrcurl.length() - 4);
 				try {
-					mLrcRead.Read("/mnt/sdcard/Music/" + lrcurl2 + ".lrc");
+					mLrcRead.Read("/sdcard/" + lrcurl2 + ".lrc");
 					LyricList = mLrcRead.GetLyricContent();
 					mLyricView.setSentenceEntities(LyricList);
 					mHandler.post(mRunnable);

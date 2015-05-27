@@ -312,11 +312,11 @@ public class MainPlaying extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals("isplay")) {
-				play_state = intent.getIntExtra("state", 0);
+				play_state = intent.getIntExtra("state", 1);
 				if (play_state == 1) {
 					main_playing_button2
 							.setBackgroundResource(R.drawable.playing_button_pressed);
-				} else {
+				} else if(play_state == 0){
 					main_playing_button2
 							.setBackgroundResource(R.drawable.pause_button_pressed);
 				}

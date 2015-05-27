@@ -2,7 +2,9 @@ package mrpan.android.lovemusic.ui;
 
 import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -139,13 +141,12 @@ public class SongList extends Activity implements MyListViewListener,
 				}
 			}
 			if (intent.getAction().equals("info")) {
-				// 第一次根据歌曲索引跟新UI
+				//第一次根据歌曲索引跟新UI
 				pesition = intent.getIntExtra("pesition", -1);
 				song_nameView.setText(songItems.get(pesition).getTitle()
 						.toString());
 				singer_nameView.setText(songItems.get(pesition).getSinger()
 						.toString());
-
 				musicID = songItems.get(pesition).getSongid();
 				musicAlbum_ID = songItems.get(pesition).getAlbumid();
 
@@ -176,8 +177,10 @@ public class SongList extends Activity implements MyListViewListener,
 	 * */
 	private void onLoad() {
 		musiclistview.stopRefresh();
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("MM-dd hh:mm:ss");
+		String time=sDateFormat.format(new Date());
 		musiclistview.stopLoadMore();
-		musiclistview.setRefreshTime("");// 刚刚
+		musiclistview.setRefreshTime("上次刷新:"+time);//刚刚
 	}
 
 	public void mediaScan(File file) {
@@ -195,7 +198,7 @@ public class SongList extends Activity implements MyListViewListener,
 	@Override
 	public void onClick(View arg0) {
 		int id = arg0.getId();
-		Logger.i("ID:" + id);
+		//Logger.i("ID:" + id);
 		switch (id) {
 		case R.id.black:
 			// blackNormalState();
